@@ -6,6 +6,7 @@
         required
         clearable
         label="用户名"
+        left-icon="contact"
         right-icon="question-o"
         placeholder="请输入用户名"
         @click-right-icon="$toast('question')"
@@ -18,6 +19,20 @@
         placeholder="请输入密码"
         required
       />
+      <van-field
+        v-model="sms"
+        center
+        clearable
+        required
+        label="短信验证码"
+        placeholder="请输入短信验证码"
+      >
+        <van-button
+          slot="button"
+          size="small"
+          type="primary"
+        >发送验证码</van-button>
+      </van-field>
     </van-cell-group>
     <van-button
       :loading="loading"
@@ -43,6 +58,7 @@ export default {
     return {
       userName: "",
       passWord: "",
+      sms: "",
       loading: false
     };
   },
