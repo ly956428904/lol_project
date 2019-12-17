@@ -1,28 +1,58 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <van-cell-group>
+      <van-field
+        v-model="userName"
+        required
+        clearable
+        label="用户名"
+        right-icon="question-o"
+        placeholder="请输入用户名"
+        @click-right-icon="$toast('question')"
+      />
+
+      <van-field
+        v-model="passWord"
+        type="password"
+        label="密码"
+        placeholder="请输入密码"
+        required
+      />
+    </van-cell-group>
+    <van-button
+      :loading="loading"
+      type="info"
+      loading-text="加载中..."
+      size="large"
+      @click="login"
+    >登录</van-button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Vue from "vue";
+import { Button, Field, CellGroup, Toast } from "vant";
+Vue.use(Field)
+  .use(Button)
+  .use(CellGroup)
+  .use(Toast);
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  name: "app",
+  data() {
+    return {
+      userName: "",
+      passWord: "",
+      loading: false
+    };
+  },
+  methods: {
+    login() {
+      console.log(this.userName, this.passWord);
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
