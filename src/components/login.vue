@@ -65,6 +65,11 @@ export default {
   },
   methods: {
     login() {
+       this.$Ajax.api('login123', 'login', {userName :this.userName, passWord: this.passWord}).then(()=> {
+         console.log(123);
+       }).catch((err)=> {
+         console.log(err);
+       })
       console.log(this.userName, this.passWord);
     }
   }
