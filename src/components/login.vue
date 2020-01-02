@@ -41,17 +41,19 @@
       size="large"
       @click="login"
     >登录</van-button>
+    <span>{{ count }}</span>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import { Button, Field, CellGroup, Toast } from "vant";
+// import { mapActions } from "vuex";
+import {mapState} from 'vuex';
 Vue.use(Field)
   .use(Button)
   .use(CellGroup)
   .use(Toast);
-
 
 export default {
   name: "Login",
@@ -63,18 +65,46 @@ export default {
       loading: false
     };
   },
+
+  computed: {
+    ...mapState({
+    count: state => state.account.count,
+  })
+    // count() {
+    //   debugger
+    //   return this.$store.state.account.count;
+    // }
+  },
+
   methods: {
+    // ...mapActions(["increment"]),
     login() {
-       this.$Ajax.api('login123', 'login', {userName :this.userName, passWord: this.passWord}).then(()=> {
-         console.log(123);
-       }).catch((err)=> {
-         console.log(err);
-       })
+      //  this.$store.dispatch({
+      //   type: "increment",
+      //   amount: 10
+      // });
+      // this.increment({amount: 10})
+      this.$store.dispatch("account/increment", {amount: 10}).then(() => {
+        debugger
+        this.loading = true;
+      });
+      // this.$storestore.dispatch("actionAlert").then(() => {
+      // });
+      this.$axios
+        .post("/api/login", {
+          userName: this.userName,
+          passWord: this.passWord
+        })
+        .then(() => {
+          console.log(123);
+        })
+        .catch(err => {
+          console.log(err);
+        });
       console.log(this.userName, this.passWord);
     }
   }
 };
-
 </script>
 
 <style scoped>
