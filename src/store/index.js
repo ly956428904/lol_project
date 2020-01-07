@@ -12,7 +12,6 @@ const moduleA = {
   },
   mutations: {
     increment (state, payload) {
-      debugger
       state.count += payload.amount
     }
   },
@@ -22,7 +21,6 @@ const moduleA = {
         if (payload) {
           setTimeout(() => {
             commit('increment', payload);
-            debugger
             resolve();
           }, 1000)
           return;

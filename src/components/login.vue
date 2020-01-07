@@ -42,6 +42,7 @@
       @click="login"
     >登录</van-button>
     <span>{{ count }}</span>
+    <div class="login-charts" ref="loginCharts"></div>
   </div>
 </template>
 
@@ -49,7 +50,7 @@
 import Vue from "vue";
 import { Button, Field, CellGroup, Toast } from "vant";
 // import { mapActions } from "vuex";
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 Vue.use(Field)
   .use(Button)
   .use(CellGroup)
@@ -68,15 +69,43 @@ export default {
 
   computed: {
     ...mapState({
-    count: state => state.account.count,
-  })
+      count: state => state.account.count
+    })
     // count() {
     //   debugger
     //   return this.$store.state.account.count;
     // }
   },
 
+  mounted() {
+    this.drawInit();
+  },
+
   methods: {
+    drawInit() {
+      let myChart = this.$echarts.init(this.$refs["loginCharts"]);
+      myChart.setOption({
+        title: {
+          text: "ECharts 入门示例"
+        },
+        tooltip: {},
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20]
+          }
+        ]
+      });
+      window.onresize = function() {
+        myChart.resize();
+      };
+    },
+
     // ...mapActions(["increment"]),
     login() {
       //  this.$store.dispatch({
@@ -84,8 +113,7 @@ export default {
       //   amount: 10
       // });
       // this.increment({amount: 10})
-      this.$store.dispatch("account/increment", {amount: 10}).then(() => {
-        debugger
+      this.$store.dispatch("account/increment", { amount: 10 }).then(() => {
         this.loading = true;
       });
       // this.$storestore.dispatch("actionAlert").then(() => {
@@ -108,4 +136,11 @@ export default {
 </script>
 
 <style scoped>
+.login-charts {
+  width: 100%;
+  max-width: 500px;
+  max-height: 400px;
+  height: 100%;
+  position: absolute;
+}
 </style>
