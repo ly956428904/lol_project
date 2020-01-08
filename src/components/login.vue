@@ -37,20 +37,20 @@
     <van-button
       :loading="loading"
       type="info"
-      loading-text="加载中..."
+      loading-text="登录中..."
       size="large"
       @click="login"
     >登录</van-button>
-    <span>{{ count }}</span>
-    <div class="login-charts" ref="loginCharts"></div>
+    <div
+      class="login-charts"
+      ref="loginCharts"
+    ></div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import { Button, Field, CellGroup, Toast } from "vant";
-// import { mapActions } from "vuex";
-import { mapState } from "vuex";
 Vue.use(Field)
   .use(Button)
   .use(CellGroup)
@@ -65,16 +65,6 @@ export default {
       sms: "",
       loading: false
     };
-  },
-
-  computed: {
-    ...mapState({
-      count: state => state.account.count
-    })
-    // count() {
-    //   debugger
-    //   return this.$store.state.account.count;
-    // }
   },
 
   mounted() {
@@ -106,30 +96,24 @@ export default {
       };
     },
 
-    // ...mapActions(["increment"]),
     login() {
-      //  this.$store.dispatch({
-      //   type: "increment",
-      //   amount: 10
-      // });
-      // this.increment({amount: 10})
-      this.$store.dispatch("account/increment", { amount: 10 }).then(() => {
-        this.loading = true;
-      });
-      // this.$storestore.dispatch("actionAlert").then(() => {
-      // });
-      this.$axios
-        .post("/api/login", {
-          userName: this.userName,
-          passWord: this.passWord
-        })
-        .then(() => {
-          console.log(123);
-        })
-        .catch(err => {
-          console.log(err);
+      this.loading = true;
+      this.$ajax("/api/login", { userName: this.userName, passWord: this.passWord}).then(res => {
+        console.log(res);
+        if (res.code == 0) {
+          this.loading = false;
+          sessionStorage.setItem("userName", res.data.userName);
+          this.$store.commit("login", res.data.userName);
+          this.$router.replace({path:'/home'})
+        }
+      }).catch((err) => {
+        this.loading = false;
+        Toast.fail({
+          message: err,
+          forbidClick: true
         });
-      console.log(this.userName, this.passWord);
+      });
+    
     }
   }
 };

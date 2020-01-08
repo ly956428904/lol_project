@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
-import axios from 'axios';
+import ajax from './core/ajax';
 import * as echarts from 'echarts/lib/echarts';
 // 引入 echarts 主模块。
 import 'echarts/lib/echarts';
@@ -16,7 +16,7 @@ import 'echarts/lib/component/legend';
 
 
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+Vue.prototype.$ajax = ajax;
 Vue.prototype.$echarts =echarts;
 
 new Vue({
